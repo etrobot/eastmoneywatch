@@ -1,47 +1,191 @@
-# PNPM + UV Demo Project
+# 东方财富盘口异动监控系统
 
-This is a monorepo demonstrating a fullstack application using pnpm for package management and UV for Python dependency management.
+一个基于 FastAPI + React 的实时股票市场异动监控系统，可实时追踪和展示A股市场的涨跌停、大笔买卖等异动信息，并按概念板块分类显示。
 
-## Project Structure
+## 项目简介
 
-- `backend/`: Python backend using FastAPI and Uvicorn, with UV for dependency management.
-- `frontend/`: React frontend using Vite and pnpm for dependency management.
+本项目通过爬取东方财富网的股票异动数据，结合概念板块信息，实时监控并展示股票市场的异动情况。系统采用 WebSocket 推送机制，确保数据的实时性，帮助用户快速捕捉市场机会。
 
-## Getting Started
+### 主要功能
 
-### Prerequisites
+- **实时盘口异动监控**：自动抓取涨停板、大笔买卖、快速拉升等异动信息
+- **概念板块分类**：将异动股票按概念板块分组展示
+- **时间段分类**：按上午/下午时间段展示异动数据
+- **板块精选功能**：可标记关注的板块，跟踪重点概念
+- **实时 WebSocket 推送**：无需刷新页面即可获取最新数据
+- **暗色/亮色主题切换**：支持深色和浅色两种主题模式
+- **板块筛选**：支持多选筛选特定概念板块
 
-- Node.js (with pnpm installed)
-- Python (with UV installed)
+## 技术栈
 
-### Installation
+### 后端
+- **Python 3.13+**
+- **FastAPI**：高性能 Web 框架
+- **akshare**：股票数据获取库
+- **pandas**：数据处理
+- **WebSocket**：实时数据推送
+- **uv**：Python 包管理工具
 
-1. **Install all dependencies (frontend and backend):**
+### 前端
+- **React 18**
+- **TypeScript**
+- **Vite**：构建工具
+- **Tailwind CSS**：样式框架
+- **Radix UI**：UI 组件库
+- **react-hot-toast**：消息提示
 
-   ```bash
-   pnpm run install:all
-   ```
+## 项目结构
 
-### Running the Development Servers
-
-To run both the frontend and backend development servers concurrently:
-
-```bash
-pnpm run dev
+```
+eastmoneywatch/
+├── backend/                 # 后端服务
+│   ├── main.py             # FastAPI 主应用
+│   ├── concepts.py         # 概念板块数据获取
+│   ├── fluctuation.py      # 股票异动数据获取
+│   ├── prepare.py          # 数据预处理
+│   ├── data_processor.py   # 数据处理器
+│   ├── worker_queue.py     # 后台任务队列
+│   ├── config.py           # 配置文件
+│   ├── routes/             # API 路由
+│   │   ├── api.py          # REST API 路由
+│   │   └── websocket.py    # WebSocket 路由
+│   ├── services/           # 业务逻辑服务
+│   │   ├── backend_service.py
+│   │   └── pick_service.py
+│   ├── static/             # 静态数据存储
+│   └── pyproject.toml      # Python 项目配置
+│
+├── frontend/               # 前端应用
+│   ├── app/               # React 应用代码
+│   │   ├── App.tsx        # 主应用组件
+│   │   ├── main.tsx       # 应用入口
+│   │   ├── components/    # UI 组件
+│   │   └── lib/           # 工具库
+│   ├── index.html
+│   ├── package.json
+│   ├── vite.config.ts
+│   └── tailwind.config.js
+│
+├── package.json            # 根项目配置
+├── pnpm-workspace.yaml     # pnpm 工作空间配置
+└── LICENSE                 # Apache 2.0 许可证
 ```
 
-This will start:
-- The backend server (FastAPI/Uvicorn) with auto-reloading.
-- The frontend development server (Vite).
+## 安装与运行
 
-### Building the Project
+### 环境要求
 
-To build both the frontend and backend:
+- **Node.js** 18+
+- **Python** 3.13+
+- **pnpm** (包管理器)
+- **uv** (Python 包管理器)
 
+### 安装步骤
+
+1. **克隆项目**
 ```bash
-pnpm run build
+git clone <repository-url>
+cd eastmoneywatch
 ```
 
-This will:
-- Build the frontend for production.
-- (Note: Backend build step is currently a placeholder and not fully implemented.)
+2. **安装依赖**
+```bash
+# 安装所有依赖（前端和后端）
+pnpm run install:all
+```
+
+### 运行开发服务器
+
+```bash
+# 同时启动前端和后端开发服务器
+pnpm dev
+```
+
+后端服务将运行在 `http://localhost:61125`  
+前端应用将运行在 `http://localhost:5173`
+
+**或者分别启动：**
+
+```bash
+# 仅启动前端
+pnpm run dev:frontend
+
+# 仅启动后端
+pnpm run dev:backend
+```
+
+### 构建生产版本
+
+```bash
+# 构建前端和后端
+pnpm build
+```
+
+## 使用说明
+
+### 首次使用
+
+1. 启动应用后，系统会自动开始抓取最新的股票异动数据
+2. 点击左侧菜单的「更新概念板块」按钮，获取最新的概念板块数据（首次使用必须执行）
+3. 等待数据加载完成后，即可在主界面看到按板块分类的异动股票
+
+### 主要操作
+
+- **查看异动数据**：主界面展示所有概念板块的异动股票，分为上午和下午两个时间段
+- **筛选板块**：点击顶部的「板块筛选」下拉框，可多选要查看的板块
+- **标记精选板块**：点击板块名称按钮，可将该板块标记为精选（按钮变为黄色）
+- **查看精选板块**：点击左侧菜单的「精选」，查看所有已标记的板块和股票
+- **更新概念板块**：点击顶部的「更新概念板块」按钮，重新抓取概念板块数据
+- **主题切换**：点击左侧菜单底部的主题切换按钮，在亮色和暗色主题间切换
+
+### 数据说明
+
+- **涨停板相关**：封涨停板、打开涨停板
+- **异动类型**：快速拉升、大笔买入、大笔卖出、封跌停板等
+- **涨跌幅显示**：绿色表示上涨，红色表示下跌，涨停板标注百分比
+- **几天几板标识**：部分股票会显示连板信息（如「2天2板」）
+
+## API 接口
+
+### REST API
+
+- `GET /api/concepts/sectors` - 获取概念板块列表
+- `POST /api/concepts` - 更新概念板块数据
+- `GET /api/picked` - 获取精选股票列表
+- `POST /api/picked` - 添加精选股票
+- `DELETE /api/picked/{code}` - 删除精选股票
+
+### WebSocket
+
+- `ws://localhost:61125/ws/changes` - 实时股票异动数据推送
+
+## 数据来源
+
+本项目使用 **akshare** 库获取东方财富网公开的股票数据，包括：
+- 股票实时异动信息
+- 概念板块分类数据
+- 个股所属概念板块关联关系
+
+## 注意事项
+
+1. **数据延迟**：数据来源于网络爬取，可能存在1-2分钟延迟
+2. **交易时间**：仅在 A 股交易时间段（9:30-11:30, 13:00-15:00）有实时数据
+3. **请求频率**：首次更新概念板块数据时，会请求大量接口，耗时较长（约10-20分钟）
+4. **数据筛选**：系统会自动过滤市值过大的板块和 ST 股票
+5. **仅供参考**：本项目数据仅供学习和参考，不构成任何投资建议
+
+## 许可证
+
+本项目采用 [Apache License 2.0](LICENSE) 开源许可证。
+
+## 免责声明
+
+本项目仅用于技术学习和研究目的，不构成任何投资建议。股市有风险，投资需谨慎。使用本项目所产生的任何投资决策及其后果，均由用户自行承担。
+
+## 贡献
+
+欢迎提交 Issue 和 Pull Request 来改进项目。
+
+## 联系方式
+
+如有问题或建议，请通过 GitHub Issues 联系。
