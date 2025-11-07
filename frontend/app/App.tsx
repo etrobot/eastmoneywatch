@@ -65,7 +65,7 @@ const StockMarketMonitor = () => {
     let manuallyClosed = false;
 
     function connectWS() {
-      ws = new window.WebSocket('ws://localhost:61125/ws/changes');
+      ws = new window.WebSocket('ws://localhost:8168/ws/changes');
       ws.onopen = () => {
         setLoadingMessage('连接数据流启动中...');
       };
@@ -258,7 +258,7 @@ const StockMarketMonitor = () => {
     const fetchSectors = async () => {
       try {
         console.log('[fetchSectors] 开始拉取板块映射...');
-        const res = await fetch('http://localhost:61125/api/concepts/sectors');
+        const res = await fetch('http://localhost:8168/api/concepts/sectors');
         const data = await res.json();
         console.log('[fetchSectors] API响应:', data);
         if (data.status === 'success') {

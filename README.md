@@ -101,7 +101,7 @@ pnpm run install:all
 pnpm dev
 ```
 
-后端服务将运行在 `http://localhost:61125`  
+后端服务将运行在 `http://localhost:8168`  
 前端应用将运行在 `http://localhost:5173`
 
 **或者分别启动：**
@@ -157,7 +157,7 @@ pnpm build
 
 ### WebSocket
 
-- `ws://localhost:61125/ws/changes` - 实时股票异动数据推送
+- `ws://localhost:8168/ws/changes` - 实时股票异动数据推送
 
 ## 数据来源
 

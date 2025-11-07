@@ -34,7 +34,7 @@ export function PickedPage() {
   // 加载板块列表
   const loadSectors = async () => {
     try {
-      const response = await fetch('http://localhost:61125/api/concepts/sectors');
+      const response = await fetch('http://localhost:8168/api/concepts/sectors');
       const data = await response.json();
       if (data.status === 'success') {
         setSectors(data.data);
@@ -49,12 +49,12 @@ export function PickedPage() {
     console.log(`开始通过搜索获取股票 ${stockName}(${stockCode}) 的所有相关板块`);
     try {
       // 先尝试用股票代码搜索
-      let response = await fetch(`http://localhost:61125/api/concepts/search?q=${encodeURIComponent(stockCode)}`);
+      let response = await fetch(`http://localhost:8168/api/concepts/search?q=${encodeURIComponent(stockCode)}`);
       let data = await response.json();
 
       // 如果用代码搜索没结果，再用名称搜索
       if (data.status === 'success' && data.data.length === 0) {
-        response = await fetch(`http://localhost:61125/api/concepts/search?q=${encodeURIComponent(stockName)}`);
+        response = await fetch(`http://localhost:8168/api/concepts/search?q=${encodeURIComponent(stockName)}`);
         data = await response.json();
       }
 
@@ -108,7 +108,7 @@ export function PickedPage() {
     }
 
     try {
-      const response = await fetch(`http://localhost:61125/api/concepts/search?q=${encodeURIComponent(query)}`);
+      const response = await fetch(`http://localhost:8168/api/concepts/search?q=${encodeURIComponent(query)}`);
       const data = await response.json();
       if (data.status === 'success') {
         setSearchResults(data.data);

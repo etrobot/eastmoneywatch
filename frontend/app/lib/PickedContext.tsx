@@ -28,7 +28,7 @@ export const PickedProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const fetchPicked = async () => {
     if (!loading) setLoading(true);
     try {
-      const res = await fetch('http://localhost:61125/api/picked');
+      const res = await fetch('http://localhost:8168/api/picked');
       const data = await res.json();
       if (data.status === 'success') {
         setPickedStocks(data.data || []);
@@ -64,7 +64,7 @@ export const PickedProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         板块名称: stock.板块名称
       });
       
-      const response = await fetch('http://localhost:61125/api/picked', {
+      const response = await fetch('http://localhost:8168/api/picked', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(stock),
@@ -85,7 +85,7 @@ export const PickedProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const deleteStockByCode = async (stockCode: string) => {
     if (!window.confirm('确定要删除这只股票吗？')) return;
     try {
-      const response = await fetch(`http://localhost:61125/api/picked/${stockCode}`, {
+      const response = await fetch(`http://localhost:8168/api/picked/${stockCode}`, {
         method: 'DELETE',
       });
       const result = await response.json();
@@ -102,7 +102,7 @@ export const PickedProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   
   const deleteStockBySectorName = async (sectorName: string) => {
     try {
-      const response = await fetch(`http://localhost:61125/api/picked/${encodeURIComponent(sectorName)}`, {
+      const response = await fetch(`http://localhost:8168/api/picked/${encodeURIComponent(sectorName)}`, {
         method: 'DELETE',
       });
       const result = await response.json();
@@ -119,7 +119,7 @@ export const PickedProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
   const updateStock = async (stockCode: string, stockData: PickedStock) => {
     try {
-      const response = await fetch(`http://localhost:61125/api/picked/${stockCode}`, {
+      const response = await fetch(`http://localhost:8168/api/picked/${stockCode}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(stockData),

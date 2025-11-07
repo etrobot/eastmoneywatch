@@ -32,7 +32,7 @@ export const UpdateConceptsButton: React.FC<UpdateConceptsButtonProps> = ({
     
     try {
       console.log('UpdateConceptsButton: 发送更新概念请求到后端...');
-      const response = await fetch('http://localhost:61125/api/queue_get_concepts', {
+      const response = await fetch('http://localhost:8168/api/queue_get_concepts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
